@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+namespace Assignment
+{
+    class FileJumpSearch
+    {
+        public int JumpSearch(int[] arr, int length, int value)
+        {
+            int n = arr.Length;
+            int left = 0;
+            int right = (int)Math.Floor(Math.Sqrt(n));
+            //this is a jumping block
+            while (arr[right] < value && right < length)
+            {            //JUMP
+                left = right;
+                right += (int)Math.Floor(Math.Sqrt(n));
+                //check that right is not be exceeded to the length of an aray
+                if (right > length - 1)
+                    right = length - 1;
+            }
+            // linear search
+            for (int i = right; i >= left; i--)
+            {
+                if (arr[i] == value)
+                {
+                    Console.WriteLine("value found at position : {0} ", i + 1);
+                    return value;
+                }
+            }
+
+            return 0;
+        }
+
+        public void WriteFile(int[] a, String b, int x)
+        {
+            FileStream Data = new FileStream(b, FileMode.Create, FileAccess.ReadWrite);
+            StreamWriter Input = new StreamWriter(Data);
+            for (int i = 0; i < a.Length; i++)
+            {
+
+                Input.WriteLine("{0}", a[i]);
+
+            }
+
+            Input.Close();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            FileJumpSearch Call = new FileJumpSearch();
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("ENTER THE SIZE OF ARRAY : ");
+            int size = Convert.ToInt32(Console.ReadLine());
+            int[] Arr = new int[size];
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nENTER THE VALUE IN ASCENDIND ORDER: ");
+            for (int i = 0; i < size; i++)
+            {
+                Arr[i] = Convert.ToInt32(Console.ReadLine());
+            }
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("\nENTER VALUE WHICH YOU FIND USING JUMP SEARCH: ");
+            int a = Convert.ToInt32(Console.ReadLine());
+            int x;
+            x = Call.JumpSearch(Arr, size, a);
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            if (x == 0)
+                Console.WriteLine("============SEARCH NOT SUCCESSFULL===========\n===========ENTERING VALUE IS INCORRECT=============");
+            else
+                Console.WriteLine("++++++++++++++++++SEARCH SUCCESSFULL++++++++++++++++++ ");
+            String Location = @"C:\Users\Dell\Desktop\uzair.txt";
+            Call.WriteFile(Arr, Location, a);
+            Console.ReadLine();
+        }
+    }
+}
+
+
